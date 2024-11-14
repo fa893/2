@@ -87,6 +87,25 @@
             display: none;
         }
 
+        #languageBtn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            display: block;
+            margin: 20px auto;
+        }
+
+        #languageBtn:hover {
+            background-color: #0056b3;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 10px;
@@ -108,13 +127,17 @@
             button {
                 font-size: 18px;
             }
+
+            #languageBtn {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <img src="https://assets.onecompiler.app/42r523uca/42vf4yhs4/JO.png" alt="شعار" class="logo">
-        <button onclick="toggleLanguage()">تغيير اللغة</button>
+        <button id="languageBtn" onclick="toggleLanguage()">تغيير اللغة</button>
         <h1 id="formTitle">نموذج طلب دعم</h1>
         <form id="supportForm">
             <label for="organization" id="organizationLabel">اسم الجهة الحكومية:</label>
@@ -148,32 +171,48 @@
     <script>
         let isArabic = true;
 
+        const translations = {
+            ar: {
+                formTitle: 'نموذج طلب دعم',
+                organizationLabel: 'اسم الجهة الحكومية:',
+                nameLabel: 'اسمك الكامل:',
+                nationalIDLabel: 'الرقم الوطني:',
+                phoneLabel: 'رقم الهاتف:',
+                emailLabel: 'البريد الإلكتروني:',
+                issueLabel: 'المشكلة التي تحتاج الدعم من أجلها:',
+                submitBtn: 'إرسال',
+                languageBtn: 'تغيير اللغة'
+            },
+            en: {
+                formTitle: 'Support Request Form',
+                organizationLabel: 'Government Organization Name:',
+                nameLabel: 'Full Name:',
+                nationalIDLabel: 'National ID:',
+                phoneLabel: 'Phone Number:',
+                emailLabel: 'Email Address:',
+                issueLabel: 'Issue for which you need support:',
+                submitBtn: 'Submit',
+                languageBtn: 'Change Language'
+            }
+        };
+
         function toggleLanguage() {
             isArabic = !isArabic;
 
-            if (isArabic) {
-                document.documentElement.lang = 'ar';
-                document.body.dir = 'rtl';
-                document.getElementById('formTitle').textContent = 'نموذج طلب دعم';
-                document.getElementById('organizationLabel').textContent = 'اسم الجهة الحكومية:';
-                document.getElementById('nameLabel').textContent = 'اسمك الكامل:';
-                document.getElementById('nationalIDLabel').textContent = 'الرقم الوطني:';
-                document.getElementById('phoneLabel').textContent = 'رقم الهاتف:';
-                document.getElementById('emailLabel').textContent = 'البريد الإلكتروني:';
-                document.getElementById('issueLabel').textContent = 'المشكلة التي تحتاج الدعم من أجلها:';
-                document.getElementById('submitBtn').textContent = 'إرسال';
-            } else {
-                document.documentElement.lang = 'en';
-                document.body.dir = 'ltr';
-                document.getElementById('formTitle').textContent = 'Support Request Form';
-                document.getElementById('organizationLabel').textContent = 'Government Organization Name:';
-                document.getElementById('nameLabel').textContent = 'Full Name:';
-                document.getElementById('nationalIDLabel').textContent = 'National ID:';
-                document.getElementById('phoneLabel').textContent = 'Phone Number:';
-                document.getElementById('emailLabel').textContent = 'Email Address:';
-                document.getElementById('issueLabel').textContent = 'Issue for which you need support:';
-                document.getElementById('submitBtn').textContent = 'Submit';
-            }
+            const lang = isArabic ? 'ar' : 'en';
+            document.documentElement.lang = lang;
+            document.body.dir = isArabic ? 'rtl' : 'ltr';
+
+            // Update text based on language
+            document.getElementById('formTitle').textContent = translations[lang].formTitle;
+            document.getElementById('organizationLabel').textContent = translations[lang].organizationLabel;
+            document.getElementById('nameLabel').textContent = translations[lang].nameLabel;
+            document.getElementById('nationalIDLabel').textContent = translations[lang].nationalIDLabel;
+            document.getElementById('phoneLabel').textContent = translations[lang].phoneLabel;
+            document.getElementById('emailLabel').textContent = translations[lang].emailLabel;
+            document.getElementById('issueLabel').textContent = translations[lang].issueLabel;
+            document.getElementById('submitBtn').textContent = translations[lang].submitBtn;
+            document.getElementById('languageBtn').textContent = translations[lang].languageBtn;
         }
 
         function openWhatsAppOrEmail() {
@@ -197,31 +236,27 @@
 
                 تحية طيبة وبعد،
 
-                أود أن أرفع إلى مقامكم طلب الدعم حول الموضوع التالي:
-
-                المشكلة: ${issue}.
-
-                أود من حضرتكم النظر في طلبي والتكرم باتخاذ اللازم لإيجاد حل لهذه المشكلة.
-
-                بياناتي هي كالتالي:
-                - الاسم الكامل: ${name}
+                أود أن أرفع إلى مقامكم طلب الدعم التالي:
+                - الاسم: ${name}
                 - الرقم الوطني: ${nationalID}
                 - رقم الهاتف: ${phone}
                 - البريد الإلكتروني: ${email}
-
-                أرجو منكم التواصل معي في أقرب وقت ممكن لمتابعة هذا الطلب.
-
-                وتفضلوا بقبول فائق الاحترام والتقدير.
-
-                ${name}
+                - المشكلة: ${issue}
             `;
 
-            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-            const emailURL = `mailto:${emailRecipient}?subject=طلب دعم&body=${encodeURIComponent(message)}`;
+            if (whatsappNumber) {
+                const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappURL, '_blank');
+            } else if (emailRecipient) {
+                window.location.href = `mailto:${emailRecipient}?subject=طلب دعم&body=${encodeURIComponent(message)}`;
+            } else {
+                alert("لا يوجد وسيلة اتصال محددة.");
+            }
 
-            window.open(whatsappURL, '_blank');
-            window.open(emailURL, '_blank');
             document.getElementById('statusMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('statusMessage').style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>
