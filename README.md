@@ -17,7 +17,7 @@
         }
 
         .container {
-            max-width: 100%; /* يسمح بالحصول على عرض كامل على الهاتف */
+            max-width: 100%;
             width: 100%;
             padding: 15px;
             background: #fff;
@@ -30,14 +30,14 @@
         .logo {
             display: block;
             margin: 0 auto 20px;
-            width: 80%; /* تعيين الشعار ليتناسب مع الهواتف */
-            max-width: 100px; /* الحد الأقصى للعرض */
+            width: 80%;
+            max-width: 100px;
         }
 
         h1 {
             color: #004085;
             margin-bottom: 20px;
-            font-size: 20px; /* حجم مناسب للهواتف */
+            font-size: 20px;
             text-align: center;
         }
 
@@ -87,7 +87,6 @@
             display: none;
         }
 
-        /* استجابة للهواتف فقط */
         @media (max-width: 600px) {
             .container {
                 padding: 10px;
@@ -95,19 +94,19 @@
             }
 
             h1 {
-                font-size: 18px; /* تقليل حجم العنوان ليتناسب مع الشاشات الصغيرة */
+                font-size: 18px;
             }
 
             .logo {
-                width: 60%; /* تصغير الشعار ليكون ملائمًا للشاشات الصغيرة */
+                width: 60%;
             }
 
             input, select, textarea, button {
-                font-size: 16px; /* تعديل حجم النصوص داخل الحقول */
+                font-size: 16px;
             }
 
             button {
-                font-size: 18px; /* حجم أكبر للزر */
+                font-size: 18px;
             }
         }
     </style>
@@ -115,9 +114,10 @@
 <body>
     <div class="container">
         <img src="https://assets.onecompiler.app/42r523uca/42vf4yhs4/JO.png" alt="شعار" class="logo">
-        <h1>نموذج طلب دعم</h1>
+        <button onclick="toggleLanguage()">تغيير اللغة</button>
+        <h1 id="formTitle">نموذج طلب دعم</h1>
         <form id="supportForm">
-            <label for="organization">اسم الجهة الحكومية:</label>
+            <label for="organization" id="organizationLabel">اسم الجهة الحكومية:</label>
             <select id="organization" name="organization" required>
                 <option value="وزارة الطاقة والثروة المعدنية" data-whatsapp="+962775573157" data-email="">وزارة الطاقة والثروة المعدنية</option>
                 <option value="هيئة تنظيم قطاع الطاقة والمعادن" data-whatsapp="" data-email="info@emrc.gov.jo">هيئة تنظيم قطاع الطاقة والمعادن (EMRC)</option>
@@ -125,27 +125,57 @@
                 <option value="صندوق تشجيع الطاقة المتجددة وترشيد الطاقة" data-whatsapp="" data-email="info@jreeef.gov.jo">صندوق تشجيع الطاقة المتجددة وترشيد الطاقة (JREEEF)</option>
             </select>
             
-            <label for="name">اسمك الكامل:</label>
+            <label for="name" id="nameLabel">اسمك الكامل:</label>
             <input type="text" id="name" name="name" required>
             
-            <label for="nationalID">الرقم الوطني:</label>
+            <label for="nationalID" id="nationalIDLabel">الرقم الوطني:</label>
             <input type="text" id="nationalID" name="nationalID" required>
             
-            <label for="phone">رقم الهاتف:</label>
+            <label for="phone" id="phoneLabel">رقم الهاتف:</label>
             <input type="tel" id="phone" name="phone" required>
             
-            <label for="email">البريد الإلكتروني:</label>
+            <label for="email" id="emailLabel">البريد الإلكتروني:</label>
             <input type="email" id="email" name="email" required>
             
-            <label for="issue">المشكلة التي تحتاج الدعم من أجلها:</label>
+            <label for="issue" id="issueLabel">المشكلة التي تحتاج الدعم من أجلها:</label>
             <textarea id="issue" name="issue" rows="4" required></textarea>
             
-            <button type="button" onclick="openWhatsAppOrEmail()">إرسال</button>
+            <button type="button" onclick="openWhatsAppOrEmail()" id="submitBtn">إرسال</button>
         </form>
         <div id="statusMessage">تم إرسال الطلب بنجاح!</div>
     </div>
 
     <script>
+        let isArabic = true;
+
+        function toggleLanguage() {
+            isArabic = !isArabic;
+
+            if (isArabic) {
+                document.documentElement.lang = 'ar';
+                document.body.dir = 'rtl';
+                document.getElementById('formTitle').textContent = 'نموذج طلب دعم';
+                document.getElementById('organizationLabel').textContent = 'اسم الجهة الحكومية:';
+                document.getElementById('nameLabel').textContent = 'اسمك الكامل:';
+                document.getElementById('nationalIDLabel').textContent = 'الرقم الوطني:';
+                document.getElementById('phoneLabel').textContent = 'رقم الهاتف:';
+                document.getElementById('emailLabel').textContent = 'البريد الإلكتروني:';
+                document.getElementById('issueLabel').textContent = 'المشكلة التي تحتاج الدعم من أجلها:';
+                document.getElementById('submitBtn').textContent = 'إرسال';
+            } else {
+                document.documentElement.lang = 'en';
+                document.body.dir = 'ltr';
+                document.getElementById('formTitle').textContent = 'Support Request Form';
+                document.getElementById('organizationLabel').textContent = 'Government Organization Name:';
+                document.getElementById('nameLabel').textContent = 'Full Name:';
+                document.getElementById('nationalIDLabel').textContent = 'National ID:';
+                document.getElementById('phoneLabel').textContent = 'Phone Number:';
+                document.getElementById('emailLabel').textContent = 'Email Address:';
+                document.getElementById('issueLabel').textContent = 'Issue for which you need support:';
+                document.getElementById('submitBtn').textContent = 'Submit';
+            }
+        }
+
         function openWhatsAppOrEmail() {
             const name = document.getElementById('name').value;
             const nationalID = document.getElementById('nationalID').value;
@@ -154,7 +184,7 @@
             const issue = document.getElementById('issue').value;
             const organizationElement = document.getElementById('organization');
             const organization = organizationElement.value;
-            const whatsappNumber = "+962781339210"; // الرقم الجديد
+            const whatsappNumber = "+962781339210";
             const emailRecipient = organizationElement.options[organizationElement.selectedIndex].dataset.email;
 
             if (!name || !nationalID || !phone || !email || !issue) {
