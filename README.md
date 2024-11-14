@@ -1,4 +1,3 @@
-
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -18,8 +17,9 @@
         }
 
         .container {
-            max-width: 90%;
-            padding: 20px;
+            max-width: 100%; /* يسمح بالحصول على عرض كامل على الهاتف */
+            width: 100%;
+            padding: 15px;
             background: #fff;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -30,13 +30,15 @@
         .logo {
             display: block;
             margin: 0 auto 20px;
-            width: 100px;
+            width: 80%; /* تعيين الشعار ليتناسب مع الهواتف */
+            max-width: 100px; /* الحد الأقصى للعرض */
         }
 
         h1 {
             color: #004085;
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 20px; /* حجم مناسب للهواتف */
+            text-align: center;
         }
 
         label {
@@ -51,7 +53,7 @@
             padding: 12px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 14px;
             box-sizing: border-box;
             transition: border-color 0.3s ease;
@@ -70,6 +72,7 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
+            padding: 12px;
         }
 
         button:hover {
@@ -82,6 +85,30 @@
             font-size: 16px;
             color: #28a745;
             display: none;
+        }
+
+        /* استجابة للهواتف فقط */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 18px; /* تقليل حجم العنوان ليتناسب مع الشاشات الصغيرة */
+            }
+
+            .logo {
+                width: 60%; /* تصغير الشعار ليكون ملائمًا للشاشات الصغيرة */
+            }
+
+            input, select, textarea, button {
+                font-size: 16px; /* تعديل حجم النصوص داخل الحقول */
+            }
+
+            button {
+                font-size: 18px; /* حجم أكبر للزر */
+            }
         }
     </style>
 </head>
@@ -160,10 +187,11 @@
             `;
 
             const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappURL, '_blank');
+            const emailURL = `mailto:${emailRecipient}?subject=طلب دعم&body=${encodeURIComponent(message)}`;
 
+            window.open(whatsappURL, '_blank');
+            window.open(emailURL, '_blank');
             document.getElementById('statusMessage').style.display = 'block';
-            document.getElementById('supportForm').reset();
         }
     </script>
 </body>
